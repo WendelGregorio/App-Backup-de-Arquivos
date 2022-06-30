@@ -3,48 +3,55 @@ import shutil
 from datetime import date
 
 def Backup_Mult_Files():
-    file_type = input("Inisira o Tipo de arquivo(sem o '.' ponto):\n")
+    file_type = input("Insira o Tipo de extensão do arquivo:\n")
     
-    path = input("Inisira o nome da pasta do arquivo:\n")
-    entries = os.listdir(r"" + path)
+    path = input("Insira o caminho o diretório do arquivo:\n")
+    entries = [f for f in os.listdir(r"" + path)]
     
-    dst = input("Inisira o nome da pasta Destino:\n")
+    dst = input("Insira o caminho o diretório Destino:\n")
     dst = r"" + dst
     
     for file in entries:
-        if file.endswith('.txt'):
-            if shutil.copy2((path + '/' + file),(dst  + '/' +  file.replace(('.' + file_type),'') + '_' + str(date.today()) + '.' + file_type)):
-                print("Backup realizado com sucesso!")
-                Check()
-            else:
-                print("Não foi possível realizar o backup!")
-                Check()
-                
+        
+        if file_type:
+            if file.endswith(file_type):
+                if shutil.copy2((path + '/' + file),(dst  + '/' +  file.replace((file_type),'') + '_' + str(date.today()) + file_type)):
+                    print("Backup realizado com sucesso para " + file + "!\n")
+                    
+                else:
+                    print("Não foi possível realizar o backup para " + file + "!\n")
+    else: 
+        teste = path.split("\\")
+        dst = dst + "/" + teste[-1] + "_" + str(date.today())
+        if shutil.copytree(path, dst):
+            print("Backup realizado com sucesso!\n")
+        else:
+            print("Não foi possível realizar o backup!\n")
+        
+    Check()
 def Backup_one_File():
-    file_type = input("Inisira o Tipo de arquivo(sem o '.' ponto):\n")
+    file_type = input("Insira o Tipo de extensão do arquivo:\n")
     
-    path = input("Inisira o nome da pasta do arquivo:\n")
+    path = input("Insira o caminho o diretório do arquivo:\n")
     entries = os.listdir(r"" + path)
     
-    file_name = input("Inisira o nome do arquivo desejado:\n")
+    file_name = input("Insira o nome do arquivo desejado:\n")
     
-    dst = input("Inisira o nome da pasta Destino: ")
+    dst = input("Insira o caminho o diretório Destino:\n")
     dst = r"" + dst
     
     for file in entries:
-        if file.endswith('.txt'):
+        if file.endswith(file_type):
             
-            print(str(file_name + file_type) + " " + str(file))
-            if str(file_name + '.' + file_type) == str(file):
-                if shutil.copy2((path + '/' + file),(dst  + '/' +  file.replace(('.' + file_type),'') + '_' + str(date.today()) + '.' + file_type)):
-                    print("Backup realizado com sucesso!")
+            if str(file_name + file_type) == str(file):
+                if shutil.copy2((path + '/' + file),(dst  + '/' +  file.replace((file_type),'') + '_' + str(date.today()) + file_type)):
+                    print("Backup realizado com sucesso!\n")
                     Check()
                 else:
-                    print("Não foi possível realizar o backup!")
+                    print("Não foi possível realizar o backup!\n")
                     Check()
             else:
-                print("Arquivo não encontrado")
-                
+                print("Arquivo não encontrado\n")
                 Check()
             
 def Check():
@@ -67,17 +74,17 @@ def Make_Dir():
     
     if os.path.exists(str(path)):
         if os.path.exists(str(path_dir)):
-            print("Esse Diretório já existe!")
+            print("Esse Diretório já existe!\n")
         else:
             os.mkdir(path_dir)
             if os.path.exists(str(path_dir)):
-                print("Diretório criado com sucesso!")
+                print("Diretório criado com sucesso!\n")
                 Check()
             else:
-                print("Não foi possível criar o Diretório!")
+                print("Não foi possível criar o Diretório!\n")
                 Check()
     else:
-        print("O caminho inserido não existe!")
+        print("O caminho inserido não existe!\n")
         Check()
 
 def Options():
@@ -92,7 +99,7 @@ def Options():
     elif bkp_type == 4:
         os._exists(1)
     else:
-        print("Opção Inválida!")
+        print("Opção Inválida!\n")
 def main():
     Options()
         
